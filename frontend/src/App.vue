@@ -4,6 +4,7 @@
       <span>可借 {{ counts.available || 0 }}</span>
       <span>在借 {{ counts.active || 0 }}</span>
       <span>逾期 {{ counts.overdue || 0 }}</span>
+      <span>待解锁 {{ counts.held || 0 }}</span>
     </div>
     <nav class="topnav">
       <router-link to="/">看板</router-link>
@@ -19,7 +20,7 @@
 import { ref, onMounted, provide } from 'vue'
 import { api } from './api'
 const counts = ref({})
-const board = ref({ available: [], active: [], overdue: [] })
+const board = ref({ available: [], held: [], active: [], overdue: [] })
 async function load() {
   board.value = await api('/board')
   counts.value = board.value.counts || {}

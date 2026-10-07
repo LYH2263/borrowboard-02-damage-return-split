@@ -7,6 +7,11 @@ def can_lend(item_status: str, active_loans: int) -> dict:
         return {"ok": False, "reason": "already_on_loan"}
     return {"ok": True, "reason": ""}
 
+def can_unlock(item_status: str) -> dict:
+    if item_status != "damaged_hold":
+        return {"ok": False, "reason": "not_held"}
+    return {"ok": True, "reason": ""}
+
 def is_overdue(due_date: str, today: str, loan_status: str) -> bool:
     if loan_status != "active":
         return False

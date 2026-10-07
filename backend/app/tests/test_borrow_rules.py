@@ -1,9 +1,15 @@
-from app.engines.borrow_rules import can_lend, is_overdue, classify_loans
+from app.engines.borrow_rules import can_lend, can_unlock, is_overdue, classify_loans
 
 def test_mutex():
     assert can_lend("available", 0)["ok"]
     assert can_lend("available", 1)["reason"] == "already_on_loan"
     assert can_lend("retired", 0)["ok"] is False
+    assert can_lend("damaged_hold", 0)["reason"] == "item_not_available"
+
+def test_unlock_rule():
+    assert can_unlock("damaged_hold")["ok"]
+    assert can_unlock("available")["reason"] == "not_held"
+    assert can_unlock("on_loan")["ok"] is False
 
 def test_overdue():
     assert is_overdue("2020-01-01", "2026-01-01", "active")

@@ -1,7 +1,9 @@
 from app.db import connect
+from app.modules import damage_note
 
 def init_db():
     c = connect()
+    damage_note.ensure_table(c)
     c.executescript("""
     CREATE TABLE IF NOT EXISTS items(
       id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, owner TEXT, status TEXT, data_quality TEXT
