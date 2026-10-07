@@ -1,4 +1,5 @@
 from app.db import connect
+from app.modules import damage_note
 
 def init_db():
     c = connect()
@@ -12,6 +13,7 @@ def init_db():
     );
     CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY, value TEXT);
     """)
+    damage_note.ensure_schema(c)
     if c.execute("SELECT COUNT(*) c FROM items").fetchone()["c"] == 0:
         c.executemany("INSERT INTO items(title,owner,status,data_quality) VALUES (?,?,?,?)", [
             ("电钻", "老周", "available", "clean"),
